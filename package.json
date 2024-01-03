@@ -1,0 +1,31 @@
+{
+  "name": "clancy",
+  "version": "0.0.1",
+  "description": "A library for deriving non-image data from image files",
+  "main": "src/index.ts",
+  "scripts": {
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zacharyarney/clancy.git"
+  },
+  "author": "Zachary Arney",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zacharyarney/clancy/issues"
+  },
+  "homepage": "https://github.com/zacharyarney/clancy#readme",
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.2",
+    "prettier": "^3.1.1",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
