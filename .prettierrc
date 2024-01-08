@@ -1,14 +1,14 @@
 {
+  "arrowParens": "avoid",
+  "bracketSpacing": true,
+  "endOfLine": "lf",
+  "htmlWhitespaceSensitivity": "strict",
+  "jsxSingleQuote": false,
   "printWidth": 80,
-  "tabWidth": 2,
-  "useTabs": false,
+  "proseWrap": "never",
   "semi": true,
   "singleQuote": true,
+  "tabWidth": 2,
   "trailingComma": "es5",
-  "bracketSpacing": true,
-  "jsxSingleQuote": false,
-  "arrowParens": "avoid",
-  "proseWrap": "never",
-  "htmlWhitespaceSensitivity": "strict",
-  "endOfLine": "lf"
+  "useTabs": false
 }
