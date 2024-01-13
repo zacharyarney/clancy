@@ -2,12 +2,30 @@
   "name": "clancy",
   "version": "0.0.1",
   "description": "A library for deriving non-image data from image files",
-  "type": "commonjs",
-  "main": "src/index.ts",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "source": "src/index.ts",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "require": {
+        "default": "./dist/index.cjs",
+        "types": "./dist/index.d.cts"
+      }
+    }
+  },
   "scripts": {
-    "clean": "rimraf dist",
-    "prebuild": "npm run clean",
-    "build": "tsc",
+    "prepublish": "npm run build",
+    "build": "tsup",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .ts"
   },
@@ -27,11 +45,11 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.2",
     "prettier": "^3.1.1",
-    "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
+    "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "sharp": "^0.33.1"
+    "sharp": "0.32.6"
   }
 }

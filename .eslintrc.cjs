@@ -6,7 +6,7 @@ module.exports = {
     'plugin:@typescript-eslint/strict-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', '*.config.js'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', '*.config.ts', '*.config.js'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
