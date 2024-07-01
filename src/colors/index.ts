@@ -1,3 +1,3 @@
-import ColorPalette from './colorPalette.js';
+import ColorPalette from './ColorPalette.js';
 
 export default ColorPalette;

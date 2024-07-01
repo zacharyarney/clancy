@@ -1,4 +1,4 @@
-import { ColorChannels, PaletteAlgorithm, Pixel } from '../colorPalette.js';
+import { ColorChannels, PaletteAlgorithm, Pixel } from '../ColorPalette.js';
 
 type PixelHash = Record<string, Pixel[]>;
 type Sector = [string, Pixel[]];

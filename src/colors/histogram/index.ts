@@ -1,3 +1,3 @@
-import Histogram from './histogram.js';
+import Histogram from './Histogram.js';
 
 export default Histogram;

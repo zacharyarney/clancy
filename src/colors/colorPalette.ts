@@ -1,5 +1,19 @@
 import sharp from 'sharp';
-import Histogram from './histogram';
+import Histogram from './Histogram';
+
+type InputImage =
+  | Buffer
+  | ArrayBuffer
+  | Uint8Array
+  | Uint8ClampedArray
+  | Int8Array
+  | Uint16Array
+  | Int16Array
+  | Uint32Array
+  | Int32Array
+  | Float32Array
+  | Float64Array
+  | string;
 
 type channelString = 'red' | 'green' | 'blue';
 
@@ -20,24 +34,31 @@ export interface PaletteAlgorithm {
 }
 
 class ColorPalette {
-  imageUrl: string;
+  image: InputImage;
   colorChannels: ColorChannels = [
     new Uint8ClampedArray(),
     new Uint8ClampedArray(),
     new Uint8ClampedArray(),
   ];
-  algorithm: PaletteAlgorithm;
   histogram: Pixel[] = [];
+  kMeans: Pixel[] = [];
 
-  constructor(imageUrl: string) {
-    this.imageUrl = imageUrl;
-    this.algorithm = new Histogram();
+  constructor(image: InputImage) {
+    this.image = image;
+  }
+
+  async getHistogram() {
+    if (this.histogram.length === 0) {
+      await this.loadHistogram();
+    }
+
+    return this.histogram;
   }
 
   async loadHistogram(dimensions = 3, paletteSize = 10) {
     await this.loadChannels();
-    this.algorithm = new Histogram(paletteSize, dimensions);
-    this.histogram = this.algorithm.buildPalette(this.colorChannels);
+    const algorithm = new Histogram(paletteSize, dimensions);
+    this.histogram = algorithm.buildPalette(this.colorChannels);
   }
 
   async loadChannels() {
@@ -53,7 +74,7 @@ class ColorPalette {
   }
 
   async getChannel(channel: channelString) {
-    const channelData = await sharp(this.imageUrl)
+    const channelData = await sharp(this.image)
       .extractChannel(channel)
       .raw()
       .toBuffer();
