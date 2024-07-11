@@ -32,14 +32,6 @@ class ColorPalette {
     this.algorithm = new Histogram();
   }
 
-  async getHistogram() {
-    if (this.histogram.length === 0) {
-      await this.loadHistogram();
-    }
-
-    return this.histogram;
-  }
-
   protected imageProcessorInit(imageUrl: string): IImageProcessor {
     return new SharpImageProcessor(imageUrl);
   }
