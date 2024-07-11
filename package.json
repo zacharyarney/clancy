@@ -36,6 +36,18 @@
     "type": "git",
     "url": "git+https://github.com/zacharyarney/clancy.git"
   },
+  "keywords": [
+    "jpeg",
+    "png",
+    "webp",
+    "avif",
+    "tiff",
+    "gif",
+    "image",
+    "color",
+    "histogram",
+    "palette"
+  ],
   "author": "Zachary Arney",
   "license": "MIT",
   "bugs": {
