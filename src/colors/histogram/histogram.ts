@@ -1,4 +1,4 @@
-import { ColorChannels, PaletteAlgorithm, Pixel } from '../colorPalette.js';
+import {ColorChannels, PaletteAlgorithm, Pixel} from '../colorPalette';
 
 type PixelHash = Record<string, Pixel[]>;
 type Sector = [string, Pixel[]];
@@ -22,8 +22,11 @@ class Histogram implements PaletteAlgorithm {
     const sectorOrder: Sector[] = Object.entries(pixelHash).sort((a, b) => {
       return b[1].length - a[1].length;
     });
+    const paletteSize = sectorOrder.length > this.paletteSize
+      ? this.paletteSize
+      : sectorOrder.length;
 
-    for (let i = 0; i < this.paletteSize; i++) {
+    for (let i = 0; i < paletteSize; i++) {
       const sector = sectorOrder[i][1];
       const averageColor = this.getAverageColors(sector);
       palette.push(averageColor);
@@ -40,12 +43,12 @@ class Histogram implements PaletteAlgorithm {
       const g = greenChannel[i];
       const b = blueChannel[i];
 
-      const key = this.getPixelHashKey({ r, g, b });
+      const key = this.getPixelHashKey({r, g, b});
 
       if (key in pixelHash) {
-        pixelHash[key].push({ r, g, b });
+        pixelHash[key].push({r, g, b});
       } else {
-        pixelHash[key] = [{ r, g, b }];
+        pixelHash[key] = [{r, g, b}];
       }
     }
 

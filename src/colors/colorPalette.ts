@@ -1,7 +1,5 @@
-import sharp from 'sharp';
 import Histogram from './histogram';
-
-type channelString = 'red' | 'green' | 'blue';
+import SharpImageProcessor, { IImageProcessor } from './sharpImageProcessor';
 
 type redValue = Uint8ClampedArray;
 type greenValue = Uint8ClampedArray;
@@ -20,7 +18,7 @@ export interface PaletteAlgorithm {
 }
 
 class ColorPalette {
-  imageUrl: string;
+  imageProcessor: IImageProcessor;
   colorChannels: ColorChannels = [
     new Uint8ClampedArray(),
     new Uint8ClampedArray(),
@@ -30,34 +28,30 @@ class ColorPalette {
   histogram: Pixel[] = [];
 
   constructor(imageUrl: string) {
-    this.imageUrl = imageUrl;
+    this.imageProcessor = this.imageProcessorInit(imageUrl);
     this.algorithm = new Histogram();
   }
 
-  async loadHistogram(dimensions = 3, paletteSize = 10) {
+  protected imageProcessorInit(imageUrl: string): IImageProcessor {
+    return new SharpImageProcessor(imageUrl);
+  }
+
+  async loadHistogram(dimensions = 3, paletteSize = 8) {
     await this.loadChannels();
-    this.algorithm = new Histogram(paletteSize, dimensions);
-    this.histogram = this.algorithm.buildPalette(this.colorChannels);
+    const algorithm = new Histogram(paletteSize, dimensions);
+    this.histogram = algorithm.buildPalette(this.colorChannels);
   }
 
   async loadChannels() {
     try {
-      const red: Uint8ClampedArray = await this.getChannel('red');
-      const green: Uint8ClampedArray = await this.getChannel('green');
-      const blue: Uint8ClampedArray = await this.getChannel('blue');
+      const r = await this.imageProcessor.getChannel('red');
+      const g = await this.imageProcessor.getChannel('green');
+      const b = await this.imageProcessor.getChannel('blue');
 
-      this.colorChannels = [red, green, blue];
+      this.colorChannels = [r, g, b];
     } catch (error) {
       console.error(error);
     }
-  }
-
-  async getChannel(channel: channelString) {
-    const channelData = await sharp(this.imageUrl)
-      .extractChannel(channel)
-      .raw()
-      .toBuffer();
-    return new Uint8ClampedArray(channelData);
   }
 }
 

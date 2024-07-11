@@ -28,7 +28,7 @@ The histogram algorithm sorts the pixels in an image into sectors in a 3D grid b
 the average RGB value for each sector in order of sector density.
 
 Some reasonable default parameters are provided for the histogram generation process. The number of sectors can be
-increased using the `dimensionscs` parameter for greater color accuracy and the size of the color palette can be
+increased using the `dimensions` parameter for greater color accuracy and the size of the color palette can be
 adjusted with the `paletteSize` parameter.
 
 ## Todo
@@ -42,6 +42,7 @@ adjusted with the `paletteSize` parameter.
 
 - Currently requires Node.js runtime. Browser support is on the todo list.
 - Doesn't yet support transparency and will ignore alpha channels when generating color palette, meaning that the color
-  palette will include RGB values for transparent pixels.
+  palette will include RGB values for transparent pixels which could lead to unexpected results when generating palettes
+  for images with transparency.
 - The palette is stored as an array of objects with `r`, `g`, and `b` properties. This may be subject to change in the
   future.
