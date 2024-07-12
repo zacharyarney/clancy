@@ -1,6 +1,6 @@
 {
   "name": "clancy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A library for deriving non-image data from image files",
   "type": "module",
   "main": "dist/index.cjs",
