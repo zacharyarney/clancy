@@ -14,10 +14,10 @@ class SharpImageProcessor implements IImageProcessor {
   }
 
   async getChannel(channel: channelString) {
-    const channelData = await sharp(this.imageUrl).
-      extractChannel(channel).
-      raw().
-      toBuffer();
+    const channelData = await sharp(this.imageUrl)
+      .extractChannel(channel)
+      .raw()
+      .toBuffer();
     return new Uint8ClampedArray(channelData);
   }
 }

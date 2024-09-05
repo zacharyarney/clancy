@@ -12,7 +12,7 @@ class TestableColorPalette extends ColorPalette {
 }
 
 function seededRandom(seed: number): () => number {
-  return function() {
+  return () => {
     const x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
   };
@@ -149,7 +149,7 @@ describe('ColorPalette', () => {
     it('should correctly load color channels and build kMeans palette', async () => {
       await colorPalette.loadKMeans();
       expect(colorPalette.kMeans).toHaveLength(8);
-      expect(colorPalette.kMeans[0]).toEqual( { r: 255, g: 255, b: 255 });
+      expect(colorPalette.kMeans[0]).toEqual({ r: 255, g: 255, b: 255 });
       expect(colorPalette.kMeans[1]).toEqual({ r: 255, g: 0, b: 255 });
       expect(colorPalette.kMeans[2]).toEqual({ r: 255, g: 0, b: 0 });
       expect(colorPalette.kMeans[3]).toEqual({ r: 0, g: 0, b: 0 });

@@ -18,6 +18,7 @@ export function getAverageColors(groupedPixels: Pixel[]): Pixel {
     b: Math.round(blueSum / totalPixels),
   };
 }
+
 export function getPixelHashKey(pixel: Pixel, dimensions: number) {
   const redSector = Math.floor(pixel.r / dimensions);
   const greenSector = Math.floor(pixel.g / dimensions);
