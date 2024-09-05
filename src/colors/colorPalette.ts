@@ -1,4 +1,5 @@
 import Histogram from './histogram';
+import KMeans from './kmeans/index';
 import SharpImageProcessor, { IImageProcessor } from './sharpImageProcessor';
 
 type redValue = Uint8ClampedArray;
@@ -24,33 +25,54 @@ class ColorPalette {
     new Uint8ClampedArray(),
     new Uint8ClampedArray(),
   ];
-  algorithm: PaletteAlgorithm;
+  uniqueColors = -1;
+  colorChannelsAreLoaded = false;
   histogram: Pixel[] = [];
+  kMeans: Pixel[] = [];
 
   constructor(imageUrl: string) {
-    this.imageProcessor = this.imageProcessorInit(imageUrl);
-    this.algorithm = new Histogram();
+    this.imageProcessor = new SharpImageProcessor(imageUrl);
   }
 
-  protected imageProcessorInit(imageUrl: string): IImageProcessor {
-    return new SharpImageProcessor(imageUrl);
-  }
-
-  async loadHistogram(dimensions = 3, paletteSize = 8) {
+  async loadHistogram(paletteSize = 8, dimensions = 3) {
     await this.loadChannels();
-    const algorithm = new Histogram(paletteSize, dimensions);
-    this.histogram = algorithm.buildPalette(this.colorChannels);
+    this.histogram = new Histogram(
+      Math.min(this.uniqueColors, paletteSize),
+      dimensions
+    ).buildPalette(this.colorChannels);
+  }
+
+  async loadKMeans(paletteSize = 8) {
+    await this.loadChannels();
+    this.kMeans = new KMeans(
+      Math.min(this.uniqueColors, paletteSize)
+    ).buildPalette(this.colorChannels);
   }
 
   async loadChannels() {
-    try {
-      const r = await this.imageProcessor.getChannel('red');
-      const g = await this.imageProcessor.getChannel('green');
-      const b = await this.imageProcessor.getChannel('blue');
+    if (!this.colorChannelsAreLoaded) {
+      try {
+        const [r, g, b] = await Promise.all([
+          this.imageProcessor.getChannel('red'),
+          this.imageProcessor.getChannel('green'),
+          this.imageProcessor.getChannel('blue'),
+        ]);
 
-      this.colorChannels = [r, g, b];
-    } catch (error) {
-      console.error(error);
+        this.colorChannels = [r, g, b];
+        this.colorChannelsAreLoaded = true;
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to load color channels');
+      }
+    }
+    if (this.uniqueColors < 0) {
+      const uniqueColors = new Set<string>();
+      for (let i = 0; i < this.colorChannels[0].length; i++) {
+        const key = `${this.colorChannels[0][i]}_${this.colorChannels[1][i]}_${this.colorChannels[2][i]}`;
+        uniqueColors.add(key);
+      }
+
+      this.uniqueColors = uniqueColors.size;
     }
   }
 }

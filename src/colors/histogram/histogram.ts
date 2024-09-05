@@ -5,8 +5,8 @@ type PixelHash = Record<string, Pixel[]>;
 type Sector = [string, Pixel[]];
 
 class Histogram implements PaletteAlgorithm {
-  dimensions: number;
-  paletteSize: number;
+  private readonly dimensions: number;
+  private readonly paletteSize: number;
 
   constructor(paletteSize = 10, dimensions = 3) {
     this.dimensions = dimensions;
@@ -18,17 +18,13 @@ class Histogram implements PaletteAlgorithm {
     return this.loadSortedPalette(pixelHash);
   }
 
-  loadSortedPalette(pixelHash: PixelHash): Pixel[] {
+  private loadSortedPalette(pixelHash: PixelHash): Pixel[] {
     const palette: Pixel[] = [];
     const sectorOrder: Sector[] = Object.entries(pixelHash).sort((a, b) => {
       return b[1].length - a[1].length;
     });
-    const paletteSize =
-      sectorOrder.length > this.paletteSize
-        ? this.paletteSize
-        : sectorOrder.length;
 
-    for (let i = 0; i < paletteSize; i++) {
+    for (let i = 0; i < this.paletteSize; i++) {
       const sector = sectorOrder[i][1];
       const averageColor = getAverageColors(sector);
       palette.push(averageColor);
@@ -37,7 +33,7 @@ class Histogram implements PaletteAlgorithm {
     return palette;
   }
 
-  groupPixels(channels: ColorChannels): PixelHash {
+  private groupPixels(channels: ColorChannels): PixelHash {
     const pixelHash: PixelHash = {};
     const [redChannel, greenChannel, blueChannel] = channels;
     for (let i = 0; i < redChannel.length; i++) {
