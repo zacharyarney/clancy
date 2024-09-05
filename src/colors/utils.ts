@@ -3,26 +3,26 @@ import { Pixel } from './colorPalette';
 export function getAverageColors(groupedPixels: Pixel[]): Pixel {
   const totalPixels = groupedPixels.length;
   const redSum = groupedPixels.reduce((sum, pixel) => {
-    return sum + pixel.r;
+    return sum + pixel[0];
   }, 0);
   const greenSum = groupedPixels.reduce((sum, pixel) => {
-    return sum + pixel.g;
+    return sum + pixel[1];
   }, 0);
   const blueSum = groupedPixels.reduce((sum, pixel) => {
-    return sum + pixel.b;
+    return sum + pixel[2];
   }, 0);
 
-  return {
-    r: Math.round(redSum / totalPixels),
-    g: Math.round(greenSum / totalPixels),
-    b: Math.round(blueSum / totalPixels),
-  };
+  return [
+    Math.round(redSum / totalPixels),
+    Math.round(greenSum / totalPixels),
+    Math.round(blueSum / totalPixels),
+  ];
 }
 
 export function getPixelHashKey(pixel: Pixel, dimensions: number) {
-  const redSector = Math.floor(pixel.r / dimensions);
-  const greenSector = Math.floor(pixel.g / dimensions);
-  const blueSector = Math.floor(pixel.b / dimensions);
+  const redSector = Math.floor(pixel[0] / dimensions);
+  const greenSector = Math.floor(pixel[1] / dimensions);
+  const blueSector = Math.floor(pixel[2] / dimensions);
 
   return `${redSector}_${greenSector}_${blueSector}`;
 }

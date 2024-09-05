@@ -41,12 +41,12 @@ class Histogram implements PaletteAlgorithm {
       const g = greenChannel[i];
       const b = blueChannel[i];
 
-      const key = getPixelHashKey({ r, g, b }, this.dimensions);
+      const key = getPixelHashKey([r, g, b], this.dimensions);
 
       if (key in pixelHash) {
-        pixelHash[key].push({ r, g, b });
+        pixelHash[key].push([r, g, b]);
       } else {
-        pixelHash[key] = [{ r, g, b }];
+        pixelHash[key] = [[r, g, b]];
       }
     }
 

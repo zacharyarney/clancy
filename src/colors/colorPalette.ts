@@ -8,11 +8,7 @@ type blueValue = Uint8ClampedArray;
 export type ColorChannels = [redValue, greenValue, blueValue];
 export type channelString = 'red' | 'green' | 'blue';
 
-export interface Pixel {
-  r: number;
-  g: number;
-  b: number;
-}
+export type Pixel = [number, number, number];
 
 export interface IImageProcessor {
   getChannel(channel: channelString): Promise<Uint8ClampedArray>;

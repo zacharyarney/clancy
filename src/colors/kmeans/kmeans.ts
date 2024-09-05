@@ -35,7 +35,7 @@ class KMeans implements PaletteAlgorithm {
       const a = centroidsA[i];
       const b = centroidsB[i];
 
-      if (a.r !== b.r || a.g !== b.g || a.b !== b.b) {
+      if (a[0] !== b[0] || a[1] !== b[1] || a[2] !== b[2]) {
         return true;
       }
     }
@@ -48,13 +48,13 @@ class KMeans implements PaletteAlgorithm {
 
     while (centroids.length < this.paletteSize) {
       const index = Math.floor(Math.random() * channels[0].length);
-      const centroid: Pixel = {
-        r: channels[0][index],
-        g: channels[1][index],
-        b: channels[2][index],
-      };
+      const centroid: Pixel = [
+        channels[0][index],
+        channels[1][index],
+        channels[2][index],
+      ];
       // avoid duplicates
-      const checkString = `${centroid.r}_${centroid.g}_${centroid.b}`;
+      const checkString = `${centroid[0]}_${centroid[1]}_${centroid[2]}`;
 
       if (!checkSet.has(checkString)) {
         centroids.push(centroid);
@@ -75,7 +75,7 @@ class KMeans implements PaletteAlgorithm {
       let diff = Infinity;
 
       for (let j = 0; j < centroids.length; j++) {
-        const { r, g, b } = centroids[j];
+        const [r, g, b] = centroids[j];
         const newDiff = Math.sqrt(
           Math.pow(red[i] - r, 2) +
             Math.pow(green[i] - g, 2) +
@@ -88,7 +88,7 @@ class KMeans implements PaletteAlgorithm {
         }
       }
 
-      groups[centroidIndex].push({ r: red[i], g: green[i], b: blue[i] });
+      groups[centroidIndex].push([red[i], green[i], blue[i]]);
     }
 
     return groups;

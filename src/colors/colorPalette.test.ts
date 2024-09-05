@@ -69,14 +69,14 @@ describe('ColorPalette', () => {
     it('should correctly load color channels and build histogram', async () => {
       await colorPalette.loadHistogram();
       expect(colorPalette.histogram).toHaveLength(8);
-      expect(colorPalette.histogram[0]).toEqual({ r: 255, g: 0, b: 0 });
-      expect(colorPalette.histogram[1]).toEqual({ r: 255, g: 255, b: 0 });
-      expect(colorPalette.histogram[2]).toEqual({ r: 255, g: 0, b: 255 });
-      expect(colorPalette.histogram[3]).toEqual({ r: 0, g: 255, b: 0 });
-      expect(colorPalette.histogram[4]).toEqual({ r: 0, g: 255, b: 255 });
-      expect(colorPalette.histogram[5]).toEqual({ r: 0, g: 0, b: 255 });
-      expect(colorPalette.histogram[6]).toEqual({ r: 255, g: 255, b: 255 });
-      expect(colorPalette.histogram[7]).toEqual({ r: 0, g: 0, b: 0 });
+      expect(colorPalette.histogram[0]).toEqual([255, 0, 0]);
+      expect(colorPalette.histogram[1]).toEqual([255, 255, 0]);
+      expect(colorPalette.histogram[2]).toEqual([255, 0, 255]);
+      expect(colorPalette.histogram[3]).toEqual([0, 255, 0]);
+      expect(colorPalette.histogram[4]).toEqual([0, 255, 255]);
+      expect(colorPalette.histogram[5]).toEqual([0, 0, 255]);
+      expect(colorPalette.histogram[6]).toEqual([255, 255, 255]);
+      expect(colorPalette.histogram[7]).toEqual([0, 0, 0]);
     });
 
     it('should adjust histogram based on custom dimensions and palette size', async () => {
@@ -150,14 +150,14 @@ describe('ColorPalette', () => {
     it('should correctly load color channels and build kMeans palette', async () => {
       await colorPalette.loadKMeans();
       expect(colorPalette.kMeans).toHaveLength(8);
-      expect(colorPalette.kMeans[0]).toEqual({ r: 255, g: 255, b: 255 });
-      expect(colorPalette.kMeans[1]).toEqual({ r: 255, g: 0, b: 255 });
-      expect(colorPalette.kMeans[2]).toEqual({ r: 255, g: 0, b: 0 });
-      expect(colorPalette.kMeans[3]).toEqual({ r: 0, g: 0, b: 0 });
-      expect(colorPalette.kMeans[4]).toEqual({ r: 0, g: 0, b: 255 });
-      expect(colorPalette.kMeans[5]).toEqual({ r: 0, g: 255, b: 0 });
-      expect(colorPalette.kMeans[6]).toEqual({ r: 255, g: 255, b: 0 });
-      expect(colorPalette.kMeans[7]).toEqual({ r: 0, g: 255, b: 255 });
+      expect(colorPalette.kMeans[0]).toEqual([255, 255, 255]);
+      expect(colorPalette.kMeans[1]).toEqual([255, 0, 255]);
+      expect(colorPalette.kMeans[2]).toEqual([255, 0, 0]);
+      expect(colorPalette.kMeans[3]).toEqual([0, 0, 0]);
+      expect(colorPalette.kMeans[4]).toEqual([0, 0, 255]);
+      expect(colorPalette.kMeans[5]).toEqual([0, 255, 0]);
+      expect(colorPalette.kMeans[6]).toEqual([255, 255, 0]);
+      expect(colorPalette.kMeans[7]).toEqual([0, 255, 255]);
     });
 
     it('should adjust kMeans palette based on custom palette size', async () => {
