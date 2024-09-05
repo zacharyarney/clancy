@@ -1,4 +1,5 @@
 import { ColorChannels, PaletteAlgorithm, Pixel } from '../colorPalette';
+import { getAverageColors } from '../utils';
 
 class KMeans implements PaletteAlgorithm {
   paletteSize: number;
@@ -19,7 +20,7 @@ class KMeans implements PaletteAlgorithm {
     do {
       const groups = this.groupPixels(centroids, channels);
       centroids = newCentroids;
-      newCentroids = groups.map(group => this.getAverageColors(group));
+      newCentroids = groups.map(group => getAverageColors(group));
     } while (this.centroidsDidMove(centroids, newCentroids));
 
     return centroids;
@@ -39,25 +40,6 @@ class KMeans implements PaletteAlgorithm {
       }
     }
     return false;
-  }
-
-  getAverageColors(groupedPixels: Pixel[]): Pixel {
-    const totalPixels = groupedPixels.length;
-    const redSum = groupedPixels.reduce((sum, pixel) => {
-      return sum + pixel.r;
-    }, 0);
-    const greenSum = groupedPixels.reduce((sum, pixel) => {
-      return sum + pixel.g;
-    }, 0);
-    const blueSum = groupedPixels.reduce((sum, pixel) => {
-      return sum + pixel.b;
-    }, 0);
-
-    return {
-      r: Math.round(redSum / totalPixels),
-      g: Math.round(greenSum / totalPixels),
-      b: Math.round(blueSum / totalPixels),
-    };
   }
 
   getInitialCentroids(channels: ColorChannels): Pixel[] {
