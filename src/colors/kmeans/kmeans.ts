@@ -1,8 +1,6 @@
 import { ColorChannels, PaletteAlgorithm, Pixel } from '../colorPalette';
 
-type PixelMap = Map<string, Pixel[]>;
-
-class Kmeans implements PaletteAlgorithm {
+class KMeans implements PaletteAlgorithm {
   paletteSize: number;
 
   constructor(paletteSize = 10) {
@@ -16,17 +14,14 @@ class Kmeans implements PaletteAlgorithm {
 
   cluster(initialCentroids: Pixel[], channels: ColorChannels): Pixel[] {
     let centroids = initialCentroids;
-    let newCentroids: Pixel[] = [];
+    let newCentroids = initialCentroids;
 
-    while (this.centroidsDidMove(centroids, newCentroids)) {
+    do {
       const groups = this.groupPixels(centroids, channels);
       centroids = newCentroids;
-      const averages: Pixel[] = [];
-      for (const group of groups.values()) {
-        averages.push(this.getAverageColors(group));
-      }
-      newCentroids = averages;
-    }
+      newCentroids = groups.map(group => this.getAverageColors(group));
+    } while (this.centroidsDidMove(centroids, newCentroids));
+
     return centroids;
   }
 
@@ -39,11 +34,11 @@ class Kmeans implements PaletteAlgorithm {
       const a = centroidsA[i];
       const b = centroidsB[i];
 
-      if (a.r === b.r && a.g === b.g && a.b === b.b) {
-        return false;
+      if (a.r !== b.r || a.g !== b.g || a.b !== b.b) {
+        return true;
       }
     }
-    return true;
+    return false;
   }
 
   getAverageColors(groupedPixels: Pixel[]): Pixel {
@@ -70,7 +65,7 @@ class Kmeans implements PaletteAlgorithm {
     const checkSet = new Set<string>();
 
     while (centroids.length < this.paletteSize) {
-      const index = Math.floor(Math.random() * channels.length);
+      const index = Math.floor(Math.random() * channels[0].length);
       const centroid: Pixel = {
         r: channels[0][index],
         g: channels[1][index],
@@ -81,39 +76,41 @@ class Kmeans implements PaletteAlgorithm {
 
       if (!checkSet.has(checkString)) {
         centroids.push(centroid);
+        checkSet.add(checkString);
       }
-      checkSet.add(checkString);
     }
     return centroids;
   }
 
-  groupPixels(centroids: Pixel[], channels: ColorChannels): PixelMap {
-    const centroidStrings = centroids.map(c => `${c.r}_${c.g}_${c.b}`);
-    const pixelMap: PixelMap = new Map(centroidStrings.map(str => [str, []]));
+  groupPixels(centroids: Pixel[], channels: ColorChannels): Pixel[][] {
+    const groups: Pixel[][] = Array.from(Array(centroids.length), () => []);
     const red = channels[0];
     const green = channels[1];
     const blue = channels[2];
 
     for (let i = 0; i < red.length; i++) {
-      let centroidStr = centroidStrings[0];
+      let centroidIndex = 0;
       let diff = Infinity;
 
       for (let j = 0; j < centroids.length; j++) {
         const { r, g, b } = centroids[j];
-        const newDiff =
-          Math.abs(red[i] - r) + Math.abs(green[i] - g) + Math.abs(blue[i] - b);
+        const newDiff = Math.sqrt(
+          Math.pow(red[i] - r, 2) +
+            Math.pow(green[i] - g, 2) +
+            Math.pow(blue[i] - b, 2)
+        );
 
         if (newDiff < diff) {
           diff = newDiff;
-          centroidStr = centroidStrings[j];
+          centroidIndex = j;
         }
       }
 
-      pixelMap.get(centroidStr)?.push({ r: red[i], g: green[i], b: blue[i] });
+      groups[centroidIndex].push({ r: red[i], g: green[i], b: blue[i] });
     }
 
-    return pixelMap;
+    return groups;
   }
 }
 
-export default Kmeans;
+export default KMeans;

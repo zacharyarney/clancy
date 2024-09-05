@@ -1,3 +1,3 @@
-import Kmeans from './kmeans';
+import KMeans from './kmeans';
 
-export default Kmeans;
+export default KMeans;
