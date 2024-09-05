@@ -1,7 +1,7 @@
 {
   "name": "clancy",
-  "version": "0.1.1",
-  "description": "A library for deriving non-image data from image files",
+  "version": "0.2.0",
+  "description": "A library for deriving color data from image files",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -30,7 +30,8 @@
     "prepublish": "npm run build",
     "build": "tsup",
     "test": "jest",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",

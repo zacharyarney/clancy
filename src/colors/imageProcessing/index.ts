@@ -1,3 +1,3 @@
-import SharpImageProcessor  from './sharpImageProcessor';
+import SharpImageProcessor from './sharpImageProcessor';
 
 export default SharpImageProcessor;
