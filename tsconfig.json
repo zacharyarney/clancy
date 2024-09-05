@@ -7,10 +7,7 @@
     "target": "es2022",
     // es2022 should support Node 16 and up. https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
     // Specify a set of bundled library declaration files that describe the target runtime environment.
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     /**
      * MODULES
      **/
@@ -58,11 +55,6 @@
     // Skip type checking all .d.ts files.
     "skipLibCheck": true
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
