@@ -40,6 +40,21 @@ describe('ColorPalette', () => {
     }),
   };
 
+  const threeColorMockImageProcessor: IImageProcessor = {
+    getChannel: jest.fn().mockImplementation(channel => {
+      switch (channel) {
+        case 'red':
+          return Promise.resolve(new Uint8ClampedArray([255, 0, 0]));
+        case 'green':
+          return Promise.resolve(new Uint8ClampedArray([0, 255, 0]));
+        case 'blue':
+          return Promise.resolve(new Uint8ClampedArray([0, 0, 255]));
+        default:
+          return Promise.reject(new Error('Unknown channel'));
+      }
+    }),
+  };
+
   describe('loadHistogram', () => {
     let colorPalette: ColorPalette;
     let mockImageProcessor: IImageProcessor;
@@ -76,20 +91,7 @@ describe('ColorPalette', () => {
     });
 
     it('should return a palette with fewer colors when there are fewer unique colors than the palette size', async () => {
-      mockImageProcessor = {
-        getChannel: jest.fn().mockImplementation(channel => {
-          switch (channel) {
-            case 'red':
-              return Promise.resolve(new Uint8ClampedArray([255, 0, 0]));
-            case 'green':
-              return Promise.resolve(new Uint8ClampedArray([0, 255, 0]));
-            case 'blue':
-              return Promise.resolve(new Uint8ClampedArray([0, 0, 255]));
-            default:
-              return Promise.reject(new Error('Unknown channel'));
-          }
-        }),
-      };
+      mockImageProcessor = threeColorMockImageProcessor;
       colorPalette = new TestableColorPalette(
         'path/to/image.jpg',
         mockImageProcessor
@@ -165,20 +167,7 @@ describe('ColorPalette', () => {
     });
 
     it('should return a palette with fewer colors when there are fewer unique colors than the palette size', async () => {
-      mockImageProcessor = {
-        getChannel: jest.fn().mockImplementation(channel => {
-          switch (channel) {
-            case 'red':
-              return Promise.resolve(new Uint8ClampedArray([255, 0, 0]));
-            case 'green':
-              return Promise.resolve(new Uint8ClampedArray([0, 255, 0]));
-            case 'blue':
-              return Promise.resolve(new Uint8ClampedArray([0, 0, 255]));
-            default:
-              return Promise.reject(new Error('Unknown channel'));
-          }
-        }),
-      };
+      mockImageProcessor = threeColorMockImageProcessor;
       colorPalette = new TestableColorPalette(
         'path/to/image.jpg',
         mockImageProcessor
