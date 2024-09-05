@@ -1,19 +1,14 @@
 import sharp from 'sharp';
-
-type channelString = 'red' | 'green' | 'blue';
-
-export interface IImageProcessor {
-  getChannel(channel: channelString): Promise<Uint8ClampedArray>;
-}
+import { channelString, IImageProcessor } from '../colorPalette';
 
 class SharpImageProcessor implements IImageProcessor {
-  imageUrl: string;
+  private readonly imageUrl: string;
 
   constructor(imageUrl: string) {
     this.imageUrl = imageUrl;
   }
 
-  async getChannel(channel: channelString) {
+  public async getChannel(channel: channelString) {
     const channelData = await sharp(this.imageUrl)
       .extractChannel(channel)
       .raw()

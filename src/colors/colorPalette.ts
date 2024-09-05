@@ -1,10 +1,12 @@
 import Histogram from './histogram';
-import KMeans from './kmeans/index';
-import SharpImageProcessor, { IImageProcessor } from './sharpImageProcessor';
+import SharpImageProcessor from './imageProcessing/index';
+import KMeans from './kmeans';
 
 type redValue = Uint8ClampedArray;
 type greenValue = Uint8ClampedArray;
 type blueValue = Uint8ClampedArray;
+export type ColorChannels = [redValue, greenValue, blueValue];
+export type channelString = 'red' | 'green' | 'blue';
 
 export interface Pixel {
   r: number;
@@ -12,29 +14,31 @@ export interface Pixel {
   b: number;
 }
 
-export type ColorChannels = [redValue, greenValue, blueValue];
+export interface IImageProcessor {
+  getChannel(channel: channelString): Promise<Uint8ClampedArray>;
+}
 
 export interface PaletteAlgorithm {
   buildPalette(channels: ColorChannels): Pixel[];
 }
 
 class ColorPalette {
-  imageProcessor: IImageProcessor;
-  colorChannels: ColorChannels = [
+  protected imageProcessor: IImageProcessor;
+  private colorChannels: ColorChannels = [
     new Uint8ClampedArray(),
     new Uint8ClampedArray(),
     new Uint8ClampedArray(),
   ];
-  uniqueColors = -1;
-  colorChannelsAreLoaded = false;
-  histogram: Pixel[] = [];
-  kMeans: Pixel[] = [];
+  private colorChannelsAreLoaded = false;
+  public uniqueColors = -1;
+  public histogram: Pixel[] = [];
+  public kMeans: Pixel[] = [];
 
   constructor(imageUrl: string) {
     this.imageProcessor = new SharpImageProcessor(imageUrl);
   }
 
-  async loadHistogram(paletteSize = 8, dimensions = 3) {
+  public async loadHistogram(paletteSize = 8, dimensions = 3) {
     await this.loadChannels();
     this.histogram = new Histogram(
       Math.min(this.uniqueColors, paletteSize),
@@ -42,14 +46,14 @@ class ColorPalette {
     ).buildPalette(this.colorChannels);
   }
 
-  async loadKMeans(paletteSize = 8) {
+  public async loadKMeans(paletteSize = 8) {
     await this.loadChannels();
     this.kMeans = new KMeans(
       Math.min(this.uniqueColors, paletteSize)
     ).buildPalette(this.colorChannels);
   }
 
-  async loadChannels() {
+  public async loadChannels() {
     if (!this.colorChannelsAreLoaded) {
       try {
         const [r, g, b] = await Promise.all([

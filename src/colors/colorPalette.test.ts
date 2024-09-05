@@ -1,5 +1,4 @@
-import ColorPalette from './colorPalette';
-import { IImageProcessor } from './sharpImageProcessor';
+import ColorPalette, { IImageProcessor } from './colorPalette';
 
 class TestableColorPalette extends ColorPalette {
   constructor(

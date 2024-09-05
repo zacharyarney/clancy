@@ -2,18 +2,18 @@ import { ColorChannels, PaletteAlgorithm, Pixel } from '../colorPalette';
 import { getAverageColors } from '../utils';
 
 class KMeans implements PaletteAlgorithm {
-  paletteSize: number;
+  private readonly paletteSize: number;
 
   constructor(paletteSize = 10) {
     this.paletteSize = paletteSize;
   }
 
-  buildPalette(channels: ColorChannels): Pixel[] {
+  public buildPalette(channels: ColorChannels): Pixel[] {
     const centroids = this.getInitialCentroids(channels);
     return this.cluster(centroids, channels);
   }
 
-  cluster(initialCentroids: Pixel[], channels: ColorChannels): Pixel[] {
+  private cluster(initialCentroids: Pixel[], channels: ColorChannels): Pixel[] {
     let centroids = initialCentroids;
     let newCentroids = initialCentroids;
 
@@ -26,7 +26,7 @@ class KMeans implements PaletteAlgorithm {
     return centroids;
   }
 
-  centroidsDidMove(centroidsA: Pixel[], centroidsB: Pixel[]): boolean {
+  private centroidsDidMove(centroidsA: Pixel[], centroidsB: Pixel[]): boolean {
     if (centroidsA.length !== centroidsB.length) {
       return true;
     }
@@ -42,7 +42,7 @@ class KMeans implements PaletteAlgorithm {
     return false;
   }
 
-  getInitialCentroids(channels: ColorChannels): Pixel[] {
+  private getInitialCentroids(channels: ColorChannels): Pixel[] {
     const centroids: Pixel[] = [];
     const checkSet = new Set<string>();
 
@@ -64,7 +64,7 @@ class KMeans implements PaletteAlgorithm {
     return centroids;
   }
 
-  groupPixels(centroids: Pixel[], channels: ColorChannels): Pixel[][] {
+  private groupPixels(centroids: Pixel[], channels: ColorChannels): Pixel[][] {
     const groups: Pixel[][] = Array.from(Array(centroids.length), () => []);
     const red = channels[0];
     const green = channels[1];

@@ -13,7 +13,7 @@ class Histogram implements PaletteAlgorithm {
     this.paletteSize = paletteSize;
   }
 
-  buildPalette(channels: ColorChannels): Pixel[] {
+  public buildPalette(channels: ColorChannels): Pixel[] {
     const pixelHash = this.groupPixels(channels);
     return this.loadSortedPalette(pixelHash);
   }
